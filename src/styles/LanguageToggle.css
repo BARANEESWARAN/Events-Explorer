@@ -1,0 +1,32 @@
+.language-toggle {
+  background: transparent;
+  border: 2px solid var(--light);
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--dark);
+  transition: var(--transition);
+}
+
+.language-toggle:hover {
+  border-color: var(--primary);
+}
+
+.language-toggle span {
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.language-toggle span.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.divider {
+  color: var(--light);
+}

@@ -1,0 +1,152 @@
+.event-details {
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.event-header {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.event-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--white);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--card-shadow);
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+}
+
+.favorite-btn.active i {
+  color: var(--secondary);
+}
+
+.favorite-btn i {
+  font-size: 1.5rem;
+  color: var(--gray);
+}
+
+.event-title {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  color: var(--dark);
+}
+
+.event-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.info-item i {
+  font-size: 1.5rem;
+  color: var(--primary);
+  width: 30px;
+}
+
+.info-item h4 {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+.info-item span {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.event-description {
+  margin-bottom: 32px;
+}
+
+.event-description h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  color: var(--dark);
+}
+
+.event-description p {
+  line-height: 1.6;
+  color: var(--gray);
+}
+
+.event-map {
+  margin-bottom: 32px;
+}
+
+.event-map h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  color: var(--dark);
+}
+
+.venue-address {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray);
+}
+
+.event-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .event-image {
+    height: 250px;
+  }
+  
+  .event-title {
+    font-size: 1.5rem;
+  }
+  
+  .event-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-item {
+    padding: 16px;
+  }
+  
+  .event-actions {
+    flex-direction: column;
+  }
+  
+  .event-actions .btn {
+    width: 100%;
+  }
+}

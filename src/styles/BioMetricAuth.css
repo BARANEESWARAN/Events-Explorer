@@ -1,0 +1,481 @@
+
+.biometric-auth {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.biometric-setup {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.biometric-setup h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.biometric-setup p {
+  margin: 0 0 20px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.biometric-loading,
+.biometric-not-supported,
+.biometric-not-available,
+.biometric-success {
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.biometric-loading {
+  color: #6c5ce7;
+  background-color: #f0f0f0;
+}
+
+.biometric-not-supported {
+  color: #ff9800;
+  background-color: #fff3e0;
+  border: 1px solid #ff9800;
+}
+
+.biometric-not-available {
+  color: #666;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+}
+
+.biometric-success {
+  color: #28a745;
+  background-color: #f8fff9;
+  border: 1px solid #28a745;
+}
+
+.btn-biometric {
+  background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.btn-biometric:hover:not(:disabled) {
+  background: linear-gradient(45deg, #5d4fd6, #9188f5);
+  transform: translateY(-2px);
+}
+
+.btn-biometric:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  color: #666;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.or-divider span {
+  padding: 0 15px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.error-message {
+  color: #dc3545;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.biometric-settings {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  margin-bottom: 1rem;
+}
+
+.biometric-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.biometric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.biometric-title h3 {
+  margin: 0 0 4px 0;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.biometric-title p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.biometric-status {
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.biometric-status.enabled {
+  background: #f8fff9;
+  border: 1px solid #28a745;
+}
+
+.biometric-status.disabled {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.enabled {
+  background: #28a745;
+}
+
+.status-dot.disabled {
+  background: #666;
+}
+
+.status-indicator span {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-indicator span:first-child {
+  color: #28a745;
+}
+
+.status-indicator span:last-child {
+  color: #666;
+}
+
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.status-message i {
+  font-size: 16px;
+}
+
+.status-message i.fa-check-circle {
+  color: #28a745;
+}
+
+.status-message i.fa-info-circle {
+  color: #666;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  font-size: 14px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn i {
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5d4fd6, #9188f5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(108, 92, 231, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #6c5ce7;
+  border-color: #6c5ce7;
+}
+
+.btn-outline:hover {
+  background: #6c5ce7;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-setup {
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.btn-remove {
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.confirmation-dialog {
+  background: #fff3f3;
+  border: 1px solid #ffcccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.confirmation-dialog p {
+  margin: 0 0 16px 0;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirmation-actions .btn {
+  min-width: 100px;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.biometric-help {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.biometric-help h4 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.biometric-help ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.biometric-help li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.biometric-help li i {
+  color: #6c5ce7;
+  width: 16px;
+}
+
+.biometric-not-supported {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #fff3e0;
+  border: 1px solid #ff9800;
+  border-radius: 8px;
+  color: #ff9800;
+}
+
+.biometric-content h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+}
+
+.biometric-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.biometric-settings {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+  animation: spin 1s infinite linear;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .biometric-settings {
+    padding: 16px;
+  }
+  
+  .biometric-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .confirmation-actions {
+    flex-direction: column;
+  }
+  
+  .confirmation-actions .btn {
+    width: 100%;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}

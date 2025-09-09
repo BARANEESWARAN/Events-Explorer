@@ -1,0 +1,22 @@
+.map-preview {
+  margin: 20px 0;
+}
+
+.map-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.map-fallback {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.map-fallback p {
+  margin-bottom: 20px;
+  color: var(--gray);
+}
