@@ -12,7 +12,6 @@ const SearchBar = ({ onSearch, onClear }) => {
     if (searchTerm.trim() || location.trim()) {
       onSearch({ keyword: searchTerm, city: location });
     } else {
-      // If both fields are empty, clear the search
       handleClear();
     }
   };
@@ -20,7 +19,7 @@ const SearchBar = ({ onSearch, onClear }) => {
   const handleClear = () => {
     setSearchTerm('');
     setLocation('');
-    onClear(); // Call the clear function from parent
+    onClear(); 
   };
 
   const hasSearchValues = searchTerm.trim() || location.trim();

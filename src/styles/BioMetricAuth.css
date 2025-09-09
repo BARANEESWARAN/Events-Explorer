@@ -479,3 +479,112 @@
     width: 100%;
   }
 }
+.biometric-registration-prompt {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.biometric-registration-prompt i {
+  font-size: 2rem;
+  color: #6c5ce7;
+  margin-bottom: 15px;
+}
+
+.biometric-registration-prompt h4 {
+  margin-bottom: 10px;
+  color: #343a40;
+}
+
+.biometric-registration-prompt p {
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.registration-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.biometric-scanning,
+.biometric-success,
+.biometric-error {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.biometric-scanning {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.biometric-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.biometric-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.biometric-scanning i,
+.biometric-success i,
+.biometric-error i {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.or-divider span {
+  padding: 0 10px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.btn-biometric {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-biometric:hover:not(:disabled) {
+  background: linear-gradient(45deg, #5b4ee6, #9188fd);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(108, 92, 231, 0.3);
+}
+
+.btn-biometric:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { 
-  initAuthentication, 
+  initAuthentication,
   verifyAuthentication,
+  isWebAuthnSupported,
   initRegistration,
   verifyRegistration,
-  isWebAuthnSupported 
+  checkExistingCredentials
 } from '../services/webauthn';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import { useAuth } from '../contexts/AuthContext';
@@ -19,52 +20,61 @@ const BioMetricAuth = ({ onSuccess, onError }) => {
   const { loginWithBiometric } = useAuth();
   const { translate } = useLanguage();
 
-const handleBiometricLogin = async () => {
-  if (!isWebAuthnSupported()) {
-    if (onError) onError(translate('WebAuthn not supported in this browser', 'WebAuthn غير مدعوم في هذا المتصفح'));
-    return;
-  }
-
-  setIsLoading(true);
-  setAuthStatus('scanning');
-  if (onError) onError('');
-
-  try {
-    // Prompt for email
-    const email = prompt(translate('Please enter your email for biometric login', 'يرجى إدخال بريدك الإلكتروني للمصادقة البيومترية'));
-    
-    if (!email) {
-      throw new Error(translate('Email is required', 'البريد الإلكتروني مطلوب'));
+  const handleBiometricLogin = async () => {
+    if (!isWebAuthnSupported()) {
+      if (onError) onError(translate('WebAuthn not supported in this browser', 'WebAuthn غير مدعوم في هذا المتصفح'));
+      return;
     }
 
-    // Initialize authentication
-    const options = await initAuthentication(email);
-    
-    // Start authentication with browser
-    const assertionResponse = await startAuthentication(options);
-    
-    // Verify authentication
-    const result = await verifyAuthentication(assertionResponse);
-    
-    if (result.verified) {
-      setAuthStatus('success');
+    setIsLoading(true);
+    setAuthStatus('scanning');
+    if (onError) onError('');
+
+    try {
+ 
+      const email = prompt(translate('Please enter your email for biometric login', 'يرجى إدخال بريدك الإلكتروني للمصادقة البيومترية'));
       
-      // Use the biometric login function from auth context with REAL user data
-      await loginWithBiometric(result.userId, result.email);
+      if (!email) {
+        throw new Error(translate('Email is required', 'البريد الإلكتروني مطلوب'));
+      }
+
+      setRegistrationEmail(email);
+
+     
+      const options = await initAuthentication(email);
       
-      if (onSuccess) onSuccess();
-    } else {
-      throw new Error(translate('Authentication failed', 'فشلت المصادقة'));
+
+      const assertionResponse = await startAuthentication(options);
+      
+     
+      const result = await verifyAuthentication(assertionResponse);
+      
+      if (result.verified) {
+        setAuthStatus('success');
+        
+ 
+        await loginWithBiometric(result.email, result.displayName);
+        
+        if (onSuccess) onSuccess();
+      } else {
+        throw new Error(translate('Authentication failed', 'فشلت المصادقة'));
+      }
+    } catch (error) {
+      console.error('Biometric login error:', error);
+      
+    
+      if (error.needsRegistration) {
+        setAuthStatus('needs-registration');
+        setNeedsRegistration(true);
+        if (onError) onError(translate('No biometric credentials found. Please register first.', 'لم يتم العثور على بيانات اعتماد بيومترية. يرجى التسجيل أولاً.'));
+      } else {
+        setAuthStatus('error');
+        if (onError) onError(error.message);
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    setAuthStatus('error');
-    console.error('Biometric login failed:', error);
-    if (onError) onError(error.message);
-  } finally {
-    setIsLoading(false);
-    setTimeout(() => setAuthStatus('idle'), 2000);
-  }
-};
+  };
 
   const handleBiometricRegistration = async () => {
     if (!registrationEmail) {
@@ -76,17 +86,24 @@ const handleBiometricLogin = async () => {
     setAuthStatus('registering');
 
     try {
-   
+
+      alert(translate(
+        'Please follow the browser prompts to set up biometric authentication.',
+        'يرجى اتباع مطالبات المتصفح لإعداد المصادقة البيومترية.'
+      ));
+
+
       const options = await initRegistration(registrationEmail);
       
-  
+
       const attestationResponse = await startRegistration(options);
       
-   
+
       const result = await verifyRegistration(attestationResponse);
       
       if (result.verified) {
         setAuthStatus('registration-success');
+        setNeedsRegistration(false);
         if (onSuccess) onSuccess();
       } else {
         throw new Error(translate('Registration failed', 'فشل التسجيل'));
@@ -104,6 +121,7 @@ const handleBiometricLogin = async () => {
     setNeedsRegistration(false);
     setRegistrationEmail('');
     setAuthStatus('idle');
+    if (onError) onError('');
   };
 
   if (!isWebAuthnSupported()) {
@@ -144,7 +162,7 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Registration in progress */}
+
       {authStatus === 'registering' && (
         <div className="biometric-scanning">
           <i className="fas fa-fingerprint fa-spin"></i>
@@ -152,7 +170,6 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Registration success */}
       {authStatus === 'registration-success' && (
         <div className="biometric-success">
           <i className="fas fa-check-circle"></i>
@@ -160,7 +177,7 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Registration error */}
+
       {authStatus === 'registration-error' && (
         <div className="biometric-error">
           <i className="fas fa-times-circle"></i>
@@ -168,7 +185,7 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Authentication in progress */}
+
       {authStatus === 'scanning' && (
         <div className="biometric-scanning">
           <i className="fas fa-fingerprint fa-spin"></i>
@@ -176,7 +193,7 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Authentication success */}
+
       {authStatus === 'success' && (
         <div className="biometric-success">
           <i className="fas fa-check-circle"></i>
@@ -184,7 +201,7 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Authentication error */}
+
       {authStatus === 'error' && (
         <div className="biometric-error">
           <i className="fas fa-times-circle"></i>
@@ -192,7 +209,7 @@ const handleBiometricLogin = async () => {
         </div>
       )}
 
-      {/* Show login button when idle and not needing registration */}
+
       {authStatus === 'idle' && !needsRegistration && (
         <button 
           onClick={handleBiometricLogin} 

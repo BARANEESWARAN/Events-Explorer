@@ -11,11 +11,11 @@ const EventCard = ({ event }) => {
   const { currentUser } = useAuth();
   const [isFav, setIsFav] = useState(false);
 
-  // Update isFav state when favorites change or component mounts
+
   useEffect(() => {
     setIsFav(checkIsFavorite(event.id));
     
-    // Listen for favorites updates
+
     const handleFavoritesUpdated = () => {
       setIsFav(checkIsFavorite(event.id));
     };

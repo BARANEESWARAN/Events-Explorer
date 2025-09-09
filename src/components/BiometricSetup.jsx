@@ -19,16 +19,20 @@ const BiometricSetup = () => {
   const [success, setSuccess] = useState(false);
   const [hasBiometric, setHasBiometric] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [needsRegistration, setNeedsRegistration] = useState(false);
   const { currentUser, authMethod } = useAuth();
   const { translate } = useLanguage();
 
   useEffect(() => {
+    console.log('BiometricSetup mounted, currentUser:', currentUser?.email);
     checkBiometricStatus();
   }, []);
 
   const checkBiometricStatus = async () => {
     try {
+      console.log('Checking biometric status for:', currentUser?.email);
       const status = await getBiometricStatus();
+      console.log('Biometric status response:', status);
       setHasBiometric(status.hasBiometric);
       
       if (status.hasBiometric && authMethod === 'password') {
@@ -40,6 +44,8 @@ const BiometricSetup = () => {
   };
 
   const handleSetupBiometric = async () => {
+    console.log('Setup biometric clicked for:', currentUser?.email);
+    
     if (!currentUser) {
       setError(translate('You must be logged in to setup biometric authentication', 'يجب تسجيل الدخول لتمكين المصادقة البيومترية'));
       return;
@@ -50,36 +56,40 @@ const BiometricSetup = () => {
       return;
     }
 
-    // Add check for existing credentials
     try {
+      console.log('Checking existing credentials for:', currentUser.email);
       const hasExistingCredentials = await checkExistingCredentials(currentUser.email);
+      console.log('Existing credentials result:', hasExistingCredentials);
+      
       if (hasExistingCredentials) {
         setError(translate('User already has biometric credentials. Please use biometric login instead.', 'المستخدم لديه بالفعل بيانات اعتماد بيومترية. يرجى استخدام تسجيل الدخول البيومتري بدلاً من ذلك.'));
         return;
       }
     } catch (error) {
       console.error('Error checking existing credentials:', error);
+      // Don't return here - allow registration to proceed even if check fails
     }
 
     setIsSettingUp(true);
     setError('');
     setSuccess(false);
+    setNeedsRegistration(false);
 
     try {
-  
       alert(translate(
         'Please follow the browser prompts to set up biometric authentication. This may include using your fingerprint, face recognition, or security key.',
         'يرجى اتباع مطالبات المتصفح لإعداد المصادقة البيومترية. قد يشمل ذلك استخدام بصمة الإصبع أو التعرف على الوجه أو مفتاح الأمان.'
       ));
 
-   
+      console.log('Initializing registration for:', currentUser.email);
       const options = await initRegistration(currentUser.email);
+      console.log('Registration options received');
       
-
       const attestationResponse = await startRegistration(options);
+      console.log('Registration response received');
       
-
       const result = await verifyRegistration(attestationResponse);
+      console.log('Verification result:', result);
       
       if (result.verified) {
         setSuccess(true);
@@ -89,8 +99,20 @@ const BiometricSetup = () => {
         throw new Error(translate('Registration failed', 'فشل التسجيل'));
       }
     } catch (error) {
-      setError(error.message);
-      setTimeout(() => setError(''), 5000);
+      console.error('Biometric setup error:', error);
+      
+   
+      if (error.needsRegistration) {
+        setNeedsRegistration(true);
+        setError(translate('No biometric credentials found. Please register your biometrics first.', 'لم يتم العثور على بيانات اعتماد بيومترية. يرجى تسجيل بياناتك البيومترية أولاً.'));
+      } else {
+        setError(error.message);
+      }
+      
+      setTimeout(() => {
+        setError('');
+        setNeedsRegistration(false);
+      }, 5000);
     } finally {
       setIsSettingUp(false);
     }
@@ -102,6 +124,7 @@ const BiometricSetup = () => {
     setIsRemoving(true);
     setError('');
     setShowConfirm(false);
+    setNeedsRegistration(false);
 
     try {
       await removeBiometricCredentials();
@@ -122,6 +145,11 @@ const BiometricSetup = () => {
 
   const cancelRemove = () => {
     setShowConfirm(false);
+  };
+
+  const clearError = () => {
+    setError('');
+    setNeedsRegistration(false);
   };
 
   if (!isWebAuthnSupported()) {
@@ -211,12 +239,17 @@ const BiometricSetup = () => {
           
           <div className="status-message">
             <i className="fas fa-info-circle"></i>
-            <span>{translate('Biometric authentication is not set up', 'المصادقة البيومترية غير مثبتة')}</span>
+            <span>
+              {needsRegistration 
+                ? translate('Biometric registration required', 'مطلوب تسجيل بيومتري')
+                : translate('Biometric authentication is not set up', 'المصادقة البيومترية غير مثبتة')
+              }
+            </span>
           </div>
 
           <button 
             onClick={handleSetupBiometric}
-            disabled={isSettingUp || error.includes('already has biometric credentials')}
+            disabled={isSettingUp}
             className="btn btn-primary btn-setup"
           >
             {isSettingUp ? (
@@ -227,18 +260,23 @@ const BiometricSetup = () => {
             ) : (
               <>
                 <i className="fas fa-fingerprint"></i>
-                {translate('Set Up Biometric', 'إعداد البصمة')}
+                {needsRegistration 
+                  ? translate('Register Biometric', 'تسجيل البصمة')
+                  : translate('Set Up Biometric', 'إعداد البصمة')
+                }
               </>
             )}
           </button>
         </div>
       )}
 
-      {/* Messages */}
       {error && (
         <div className="alert alert-error">
           <i className="fas fa-exclamation-triangle"></i>
           <span>{error}</span>
+          <button onClick={clearError} className="alert-close">
+            <i className="fas fa-times"></i>
+          </button>
         </div>
       )}
 
@@ -249,7 +287,6 @@ const BiometricSetup = () => {
         </div>
       )}
 
-   
       <div className="biometric-help">
         <h4>{translate('How it works:', 'كيف تعمل:')}</h4>
         <ul>
